@@ -38,6 +38,8 @@ jobs:
 
       - name: Test
         run: |
+          npx playwright install --with-deps
+          npm run build --if-present
           npm test
 
       - name: Docker Build and push
