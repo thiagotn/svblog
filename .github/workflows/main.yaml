@@ -24,8 +24,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           version-type:  'minor'
-        run: |
-          echo "TODO: atualizar versão em outros pontos do projeto"
       
       - name: Update Resources
         run: |
