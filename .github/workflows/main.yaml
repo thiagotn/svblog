@@ -39,4 +39,6 @@ jobs:
         run: |
           echo "Building and pushing the docker image"
 
-
+      - name: Deploy
+        run: |
+          echo "Deploying the code"
