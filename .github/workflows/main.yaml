@@ -38,7 +38,7 @@ jobs:
 
       - name: Test
         run: |
-          echo "Testing the code"
+          npm test
 
       - name: Docker Build and push
         run: |
