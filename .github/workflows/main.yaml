@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     strategy:
       matrix:
@@ -17,8 +19,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Bump Version
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version-type:  'minor'
         run: |
-          echo "Bumping the version"
+          echo "TODO: atualizar versão em outros pontos do projeto"
       
       - name: Update Resources
         run: |
