@@ -5,8 +5,8 @@ on:
     branches:
       - main
 
-env:
-  ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWD }}
+        #env:
+        #ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWD }}
 jobs:
   build:
     runs-on: ubuntu-latest
