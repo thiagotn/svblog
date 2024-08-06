@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+env:
+  ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWD }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -49,3 +51,4 @@ jobs:
       - name: Deploy
         run: |
           echo "Deploying the code"
+          echo "ArgoCD Password: ${{ env.ARGOCD_PASSWD }}"
