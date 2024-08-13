@@ -7,33 +7,19 @@ on:
       - develop
 
 jobs:
-  build:
+  build-and-tests:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Bump Version
-        uses:  'phips28/gh-action-bump-version@master'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          version-type: 'patch'
-      
-      - name: Update Resources
-        run: |
-          echo "Updating the resources"
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: 'npm'
       - run: npm ci
 
@@ -43,9 +29,60 @@ jobs:
           npm run build --if-present
           npm test
 
+  bump-version:
+    runs-on: ubuntu-latest
+    needs: build-and-tests
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: Bump Version develop
+        if: github.ref == 'refs/heads/develop'
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version-type: 'patch'
+          target-branch: 'develop'
+
+      - name: Bump Version master
+        if: github.ref == 'refs/heads/main'
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version-type: 'patch'
+          target-branch: 'main'
+
+  docker-build-and-push:
+    runs-on: ubuntu-latest
+    needs: bump-version
+    permissions:
+      contents: write
+
+    steps:
       - name: Docker Build and push
         run: |
           echo "Building and pushing the docker image"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker-build-and-push
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Deploy to Development
         if: github.ref == 'refs/heads/develop'
