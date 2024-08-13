@@ -6,4 +6,14 @@ describe('getHashtags', () => {
     const hashtags = getHashtags();
     expect(hashtags).toHaveLength(4);
   });
+
+  it('returns the correct hashtags', () => {
+    const hashtags = getHashtags();
+    expect(hashtags).toEqual([
+      '#blog',
+      '#tech',
+      '#tdd',
+      '#cicd',
+    ]);
+  });
 });
