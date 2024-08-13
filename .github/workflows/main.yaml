@@ -19,12 +19,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Bump Version
+      - name: Bump Version develop
         uses:  'phips28/gh-action-bump-version@master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           version-type: 'patch'
+          target-branch: 'develop'
+
+      - name: Bump Version master
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version-type: 'patch'
+          target-branch: 'master'
       
       - name: Update Resources
         run: |
