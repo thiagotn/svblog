@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - develop
 
 jobs:
   build:
@@ -46,9 +47,18 @@ jobs:
         run: |
           echo "Building and pushing the docker image"
 
-      - name: Deploy
+      - name: Deploy to Development
+        if: github.ref == 'refs/heads/develop'
         run: |
-          echo "Deploying the code"
+          echo "Deploying the code to Development"
+          echo "ArgoCD Password: ${{ secrets.ARGOCD_PASSWD }}"
+          chmod +x scripts/sync.sh
+          ./scripts/sync.sh ${{ secrets.ARGOCD_PASSWD }} svblog
+
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Deploying the code to Production"
           echo "ArgoCD Password: ${{ secrets.ARGOCD_PASSWD }}"
           chmod +x scripts/sync.sh
           ./scripts/sync.sh ${{ secrets.ARGOCD_PASSWD }} svblog
