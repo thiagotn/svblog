@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     
     steps:
       - name: Checkout
@@ -35,6 +36,12 @@ jobs:
         run: |
           npx playwright install --with-deps
           npm run test:integration
+
+      - name: Report Coverage
+        # Set if: always() to also generate the report if tests are failing
+        # Only works if you set `reportOnFailure: true` in your vite config as specified above
+        if: always()
+        uses:  davelosert/vitest-coverage-report-action@v2
 
   bump-version:
     runs-on: ubuntu-latest
