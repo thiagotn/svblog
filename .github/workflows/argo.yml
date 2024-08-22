@@ -1,4 +1,4 @@
-name: Sync ArgoCD
+name: ArgoCD Sync
 
 on:
   workflow_dispatch:
@@ -24,3 +24,4 @@ jobs:
           echo "Syncing ArgoCD"
           echo "ArgoCD Password: ${{ secrets.ARGOCD_PASSWD }}"
           echo "Syncing to ${{ inputs.k8s_cluster }}"
+
