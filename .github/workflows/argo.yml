@@ -21,7 +21,7 @@ jobs:
 
       - name: Sync ArgoCD
         run: |
-          echo "Syncing ArgoCD"
+          echo "Syncing ArgoCD..."
           echo "ArgoCD Password: ${{ secrets.ARGOCD_PASSWD }}"
           echo "Syncing to ${{ inputs.k8s_cluster }}"
 
