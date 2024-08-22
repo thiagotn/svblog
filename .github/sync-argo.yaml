@@ -1,0 +1,22 @@
+on:
+  workflow_call:
+    inputs:
+      k8s_cluster:
+        types: string
+        options:
+          - 'gcp-dev'
+          - 'gcp-prod'
+          - 'aws-prod'
+
+  jobs:
+    sync-argo:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Sync ArgoCD
+          run: |
+            echo "Syncing ArgoCD"
+            echo "ArgoCD Password: ${{ secrets.ARGOCD_PASSWD }}"
+            echo "Syncing to ${{ inputs.k8s_cluster }}"
