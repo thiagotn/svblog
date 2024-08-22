@@ -3,10 +3,11 @@ name: ArgoCD Sync
 on:
   workflow_dispatch:
     inputs:
-      k8s_cluster:
+      cluster:
         description: 'Kubernetes Cluster'
         required: true
-        type: choice 
+        type: choice
+        default: 'gcp-dev'
         options:
           - 'gcp-dev'
           - 'gcp-prod'
