@@ -97,27 +97,8 @@ jobs:
           echo "Building and pushing the docker image"
 
   deploy:
-    runs-on: ubuntu-latest
     needs: docker-build-and-push
-    permissions:
-      contents: write
+    uses: ./.github/workflows/argo.yml
+    with:
+      cluster: 'gcp-dev'
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Deploy to Development
-        if: github.ref == 'refs/heads/develop'
-        run: |
-          echo "Deploying the code to Development"
-          echo "ArgoCD Password: ${{ secrets.ARGOCD_PASSWD }}"
-          chmod +x scripts/sync.sh
-          ./scripts/sync.sh ${{ secrets.ARGOCD_PASSWD }} svblog
-
-      - name: Deploy to Production
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "Deploying the code to Production"
-          echo "ArgoCD Password: ${{ secrets.ARGOCD_PASSWD }}"
-          chmod +x scripts/sync.sh
-          ./scripts/sync.sh ${{ secrets.ARGOCD_PASSWD }} svblog
