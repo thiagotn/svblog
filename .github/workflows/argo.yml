@@ -6,12 +6,7 @@ on:
       cluster:
         description: 'Kubernetes Cluster'
         required: true
-        type: choice
-        default: 'gcp-dev'
-        options:
-          - 'gcp-dev'
-          - 'gcp-prod'
-          - 'aws-prod'
+        type: string
 
 jobs:
   sync-argo:
